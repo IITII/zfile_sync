@@ -52,7 +52,8 @@ async function downloadFiles(files, local) {
     try {
       let res
       res = await downloadFile(file.url, file.local)
-      if (download.zfileSleep > 0) {
+      if (download.zfileSleep > 0 && res !== file.local) {
+        logger.debug(`Sleep ${download.zfileSleep}ms for download break...`)
         await sleep(download.zfileSleep)
       }
       return Promise.resolve(res)
