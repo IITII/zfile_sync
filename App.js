@@ -81,6 +81,15 @@ async function handle_files(files, local) {
   await downloadFiles(dls, local)
 }
 
+function stop() {
+  logger.info('flush cache before stop')
+  flush_cache(cache)
+  process.exit(0)
+}
+
+process.on('SIGINT' || 'SIGTERM', stop)
+
 spendTime(`Sync at ${new Date()}`, main)
   .catch(logger.error)
-  .finally(() => flush_cache(cache))
+  .finally(stop)
+

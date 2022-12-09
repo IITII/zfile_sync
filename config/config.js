@@ -17,14 +17,14 @@ const opts = {
     // 同步模式, mix: 全部, img: 图片和文件夹
     mode: 'mix',
     // slow 模式, api 请求间隔, 单位: ms
-    slow_time: 500,
+    slow_time: process.env.SLOW_TIME || 500,
     target_round: 3,
   },
   download: {
     // 下载并发数
-    zfileLimit: 3,
+    zfileLimit: process.env.ZFILE_LIMIT || 3,
     // 下载后等待 ms
-    zfileSleep: 500,
+    zfileSleep: process.env.ZFILE_SLEEP || 500,
   },
   cache_file: process.env.SYNC_CACHE || '../cache.txt',
 }
@@ -71,6 +71,9 @@ if (!config.origin) {
 }
 config.sync.local = path.resolve(__dirname, config.sync.local)
 config.cache_file = path.resolve(__dirname, config.cache_file)
+config.sync.slow_time = parseInt(config.sync.slow_time)
+config.download.zfileLimit = parseInt(config.download.zfileLimit)
+config.download.zfileSleep = parseInt(config.download.zfileSleep)
 const headers = {
   Referer: config.origin,
   Host: new URL(config.origin).host,
