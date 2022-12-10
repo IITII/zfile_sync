@@ -15,7 +15,7 @@ const opts = {
     // 本地路径
     local: process.env.SYNC_LOCAL || '../tmp',
     // 同步模式, mix: 全部, img: 图片和文件夹
-    mode: 'mix',
+    mode: process.env.SYNC_MODE || 'mix',
     // slow 模式, api 请求间隔, 单位: ms
     slow_time: process.env.SLOW_TIME || 500,
     target_round: 3,
