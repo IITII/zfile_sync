@@ -29,18 +29,19 @@ async function main() {
 async function sync_drive(driveId, target, local) {
   let queue = [{target, local}], round = 1, tmp = []
   while (queue.length > 0) {
-    let dirs = [], folders = [], files = [], unknown = []
+    let dirs = [], folders = [], files = [], unknown = [], target_trim
     const shift = queue.shift()
     if (shift) {
       const {target, local} = shift
       logger.info(`sync drive ${driveId}: ${target} -> ${local}`)
 
       if (round === sync.target_round) {
-        if (cache.has(target)) {
+        target_trim = target.trim()
+        if (cache.has(target_trim)) {
           logger.info(`skip: ${target} at round ${round}`)
           continue
         } else {
-          cache.set(target, new Date())
+          cache.set(target_trim, new Date())
         }
       }
       dirs = await list_dir(driveId, target)

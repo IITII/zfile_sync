@@ -14,7 +14,7 @@ mkdir(cache_file, true)
 if (fs.existsSync(cache_file)) {
   try {
     const rawText = fs.readFileSync(cache_file).toString(),
-      arr = rawText.split('\n').filter(x => !!x)
+      arr = rawText.split('\n').filter(x => !!x).map(_ => _.trim())
     arr.forEach(x => cache.set(x, new Date()))
   } catch (e) {
     logger.warn(`Cache init failed: ${e.message}`)
@@ -25,7 +25,8 @@ const get_cache = () => cache
 const flush_cache = new_cache => {
   mkdir(cache_file, true)
   fs.renameSync(cache_file, cache_file_bak)
-  fs.writeFileSync(cache_file, [...cache.keys()].join('\n'))
+  let cacheKeys = [...cache.keys()].filter(x => !!x).map(_ => _.trim())
+  fs.writeFileSync(cache_file, cacheKeys.join('\n'))
   cache = new_cache
 }
 
