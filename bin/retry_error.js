@@ -4,7 +4,7 @@
  */
 'use strict'
 let reg_raw, reg, retry_base, url_replace, error_log_name, log_dir, error_log_path
-reg_raw = process.env.SYNC_RETRY_REG || 'https?://'
+reg_raw = process.env.SYNC_RETRY_REG || '^https?://'
 retry_base = process.env.SYNC_RETRY_BASE || '../tmp/retry'
 url_replace = process.env.SYNC_RETRY_REPLACE || '/file/1'
 error_log_name = process.env.SYNC_RETRY_LOG_NAME || 'errors.log'

@@ -21,6 +21,7 @@ tg.dict.txt
 dict.js
 *.0x
 cache.txt
+*.bak
 
 # Runtime data
 pids
