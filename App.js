@@ -10,10 +10,11 @@ const fs = require('fs'),
 const {logger} = require('./libs/logger.js')
 const {list_drive, list_dir} = require('./libs/api.utils.js')
 const {origin, sync} = require('./config/config.js')
-const {sleep, titleFormat, isPhoto, toAbsUrl, spendTime} = require('./libs/utils.lib.js')
+const {sleep, titleFormat, isPhoto, toAbsUrl, spendTime, time_human} = require('./libs/utils.lib.js')
 const {downloadFiles} = require('./libs/dl.utils.js')
 const {get_cache, flush_cache} = require('./libs/cache.utils.js'),
   cache = get_cache()
+let start = Date.now()
 
 async function main() {
   let drives = await list_drive()
@@ -58,6 +59,7 @@ async function sync_drive(driveId, target, local) {
       logger.info(`sleep ${sync.slow_time}ms for slow down`)
       await sleep(sync.slow_time)
     }
+    logger.info(`round: ${round}: remain ${queue.length + tmp.length} tasks, total: ${time_human(Date.now() - start)}`)
 
     tmp = tmp.concat(folders)
     if (queue.length === 0) {
@@ -82,7 +84,7 @@ async function handle_files(files, local) {
 }
 
 function stop() {
-  logger.info('flush cache before stop')
+  logger.info(`flush cache before stop, running time: ${time_human(Date.now() - start)}`)
   flush_cache(cache)
   process.exit(0)
 }

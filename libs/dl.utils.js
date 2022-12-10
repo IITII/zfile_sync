@@ -8,9 +8,10 @@ const fs = require('fs')
 const {origin, download} = require('../config/config.js')
 const {logger} = require('./logger.js')
 const {axios} = require('./axios_client.js')
-const {sleep, spendTime, currMapLimit, mkdir} = require('./utils.lib.js')
+const {sleep, spendTime, currMapLimit, mkdir, time_human} = require('./utils.lib.js')
 
 async function downloadFile(url, filePath, referer = origin) {
+  let start = Date.now()
   return await new Promise((resolve, reject) => {
     if (fs.existsSync(filePath)) {
       if (fs.statSync(filePath).size === 0) {
@@ -35,7 +36,7 @@ async function downloadFile(url, filePath, referer = origin) {
       .then(res => {
         fs.writeFileSync(filePath, Buffer.from(res.data, 'binary'))
       })
-      .then(() => logger.debug(`Downloaded ${url} to ${filePath}`))
+      .then(() => logger.debug(`Downloaded ${url} to ${filePath} in ${time_human(Date.now() - start)}`))
       // 需要 resolve, 否则会出现消费卡住的情况
       .then(resolve)
       .catch(e => {
