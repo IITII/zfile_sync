@@ -28,6 +28,8 @@ const opts = {
   },
   cache_file: process.env.SYNC_CACHE || '../cache.txt',
 }
+
+// DO NOT TOUCH UNLESS YOU KNOW WHAT YOU ARE DOING
 opts.api = {
   cf: true,
   base: opts.origin,
@@ -46,6 +48,8 @@ opts.api = {
     responseType: 'json',
   },
 }
+
+// DO NOT TOUCH UNLESS YOU KNOW WHAT YOU ARE DOING
 const config = {
   DEBUG: process.env.SYNC_DEBUG === 'true',
   PROXY: process.env.PROXY,
@@ -71,6 +75,7 @@ if (!config.origin) {
 }
 config.sync.local = path.resolve(__dirname, config.sync.local)
 config.cache_file = path.resolve(__dirname, config.cache_file)
+config.cache_file_bak = `${config.cache_file}.bak`
 config.sync.slow_time = parseInt(config.sync.slow_time)
 config.download.zfileLimit = parseInt(config.download.zfileLimit)
 config.download.zfileSleep = parseInt(config.download.zfileSleep)
@@ -91,18 +96,5 @@ if (proxy) {
     port: proxy.split(':')[1],
   }
 }
-// mkdir(config.clip.baseDir)
-// if (!config.db.database) {
-//   config.db.database = '../db/db.json'
-// }
-// config.db.database = path.resolve(__dirname, config.db.database)
-// mkdir(path.dirname(config.db.database))
-//
-// function mkdir(dir) {
-//   if (!fs.existsSync(dir)) {
-//     fs.mkdirSync(dir, {recursive: true})
-//     console.log(`mkdir ${dir}`)
-//   }
-// }
 
 module.exports = config
